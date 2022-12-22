@@ -15,6 +15,8 @@ multiline_filter_tmpl="./templates/multiline-filter.tmpl"
 multiline_filters_conf="${FLUENT_BIT_DIR}conf/multiline-filters.conf"
 first_symbol_parser_tmpl="./templates/first-symbol-parsers.tmpl"
 first_symbol_parser_conf="${FLUENT_BIT_DIR}conf/first-symbol-parsers.conf"
+pre_output_filters_tmpl="./templates/pre-output-filters.tmpl"
+pre_output_filters_conf="${FLUENT_BIT_DIR}pre-output-filters.conf"
 outputs_tmpl="./templates/outputs.tmpl"
 outputs_conf="${FLUENT_BIT_DIR}conf/outputs.conf"
 plugin_tmpl="./templates/newrelic-fluent-bit-plugin.tmpl"
@@ -40,11 +42,17 @@ if [ "$OUTPUT_NEWRELIC" == "true" ]; then
 fi
 
 
-# Common parser
-[[ ! -d "${FLUENT_BIT_DIR}conf/" ]] && mkdir "${FLUENT_BIT_DIR}conf/"
+# Copy files
+if [[ ! -d "${FLUENT_BIT_DIR}conf/" ]]; then
+  cp $pre_output_filters_tmpl $pre_output_filters_conf
+  cp ./fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf
+  cp -r ./lua-scripts ${FLUENT_BIT_DIR}
+  mkdir "${FLUENT_BIT_DIR}conf/"
+else
+  rm -f "${FLUENT_BIT_DIR}conf/*"
+fi
 cp $first_symbol_parser_tmpl $first_symbol_parser_conf
-cp ./fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf
-cp ${FLUENT_BIT_DIR}fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf.copy
+
 
 # Generate plugin config
 newrelic_fluent_bit_plugin=$( echo $NEWRELIC_FLUENT_BIT_PLUGIN_URL | awk -F'/' '{print $NF}')
@@ -61,7 +69,6 @@ sed -i -e "s@{{licenseKey}}@$NEWRELIC_LICENSE_KEY@g" -e "s@{{endpoint}}@$NEWRELI
 
 
 # Generate config for container logs
-rm -f "${FLUENT_BIT_DIR}conf/*"
 echo 'Generate config in fluent-bit for containers:'
 for k in $( jq -r 'keys | .[]' <<< $containers ); do
     container=$( jq -r ".[$k]" <<< $containers )

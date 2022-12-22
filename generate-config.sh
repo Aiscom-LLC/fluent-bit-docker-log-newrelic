@@ -17,7 +17,7 @@ first_symbol_parser_tmpl="./templates/first-symbol-parsers.tmpl"
 first_symbol_parser_conf="${FLUENT_BIT_DIR}conf/first-symbol-parsers.conf"
 outputs_tmpl="./templates/outputs.tmpl"
 outputs_conf="${FLUENT_BIT_DIR}conf/outputs.conf"
-plugin_tmpl="${FLUENT_BIT_DIR}templates/newrelic-fluent-bit-plugin.tmpl"
+plugin_tmpl="./templates/newrelic-fluent-bit-plugin.tmpl"
 plugin_conf="${FLUENT_BIT_DIR}conf/newrelic-fluent-bit-plugin.conf"
 
 
@@ -43,8 +43,8 @@ fi
 # Common parser
 [[ ! -d "${FLUENT_BIT_DIR}conf/" ]] && mkdir "${FLUENT_BIT_DIR}conf/"
 cp $first_symbol_parser_tmpl $first_symbol_parser_conf
-cp ${FLUENT_BIT_DIR}fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf.copy
 cp ./fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf
+cp ${FLUENT_BIT_DIR}fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf.copy
 
 # Generate plugin config
 newrelic_fluent_bit_plugin=$( echo $NEWRELIC_FLUENT_BIT_PLUGIN_URL | awk -F'/' '{print $NF}')

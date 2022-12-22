@@ -50,9 +50,12 @@ if [[ ! -d "${FLUENT_BIT_DIR}conf/" ]]; then
   sed -i "s@{{FLUENT_BIT_DIR}}@$FLUENT_BIT_DIR@g" $config_conf
   cp -r ./lua-scripts ${FLUENT_BIT_DIR}
   mkdir "${FLUENT_BIT_DIR}conf/"
+  mkdir "${FLUENT_BIT_DIR}db-log/"
 else
   rm -f "${FLUENT_BIT_DIR}conf/*"
+  rm -f "${FLUENT_BIT_DIR}db-log/*"
 fi
+rm -f ${FLUENT_BIT_DIR}*.db
 cp $first_symbol_parser_tmpl $first_symbol_parser_conf
 
 
@@ -96,7 +99,7 @@ for k in $( jq -r 'keys | .[]' <<< $containers ); do
     echo -e " - ${container_name} (first line '$first_line')"
 
     # Inputs
-    input_tmpl__=$( sed -e "s/{{container_name}}/$container_name/" $input_tmpl )
+    input_tmpl__=$( sed -e "s/{{container_name}}/$container_name/" -e "s/{{FLUENT_BIT_DIR}}/$FLUENT_BIT_DIR/g" $input_tmpl )
     echo -e "${input_tmpl__}\n\n">>$inputs_conf
 
     # Concatenate multiline logs

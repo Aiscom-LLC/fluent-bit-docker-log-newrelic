@@ -21,7 +21,8 @@ outputs_tmpl="./templates/outputs.tmpl"
 outputs_conf="${FLUENT_BIT_DIR}conf/outputs.conf"
 plugin_tmpl="./templates/newrelic-fluent-bit-plugin.tmpl"
 plugin_conf="${FLUENT_BIT_DIR}conf/newrelic-fluent-bit-plugin.conf"
-
+config_tmpl="./templates/fluent-bit.tmpl"
+config_conf="${FLUENT_BIT_DIR}fluent-bit.conf"
 
 # Default first line of the logs is 'square-bracket' ('\[' in regex)
 first_line_bracket='square-bracket'
@@ -45,7 +46,8 @@ fi
 # Copy files
 if [[ ! -d "${FLUENT_BIT_DIR}conf/" ]]; then
   cp $pre_output_filters_tmpl $pre_output_filters_conf
-  cp ./fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf
+  cp $config_tmpl $config_conf
+  sed -i "s@{{FLUENT_BIT_DIR}}@$FLUENT_BIT_DIR@g" $config_conf
   cp -r ./lua-scripts ${FLUENT_BIT_DIR}
   mkdir "${FLUENT_BIT_DIR}conf/"
 else

@@ -1,7 +1,7 @@
 # test service
 # >test.log && >test1.log && /opt/fluent-bit/bin/fluent-bit -c /etc/fluent-bit/fluent-bit.conf -vvv
 # ./add.sh
-source .env
+source ./.env
 if [ "${FLUENT_BIT_DIR: -1}" != "/" ]; then FLUENT_BIT_DIR="${FLUENT_BIT_DIR}/"; fi
 if [[ ! -f "./containers.json" ]]; then echo "Configure containers.json" && exit; fi
 containers=$(cat './containers.json')

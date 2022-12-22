@@ -99,7 +99,7 @@ for k in $( jq -r 'keys | .[]' <<< $containers ); do
     echo -e " - ${container_name} (first line '$first_line')"
 
     # Inputs
-    input_tmpl__=$( sed -e "s/{{container_name}}/$container_name/" -e "s/{{FLUENT_BIT_DIR}}/$FLUENT_BIT_DIR/g" $input_tmpl )
+    input_tmpl__=$( sed -e "s/{{container_name}}/$container_name/" -e "s@{{FLUENT_BIT_DIR}}@$FLUENT_BIT_DIR@g" $input_tmpl )
     echo -e "${input_tmpl__}\n\n">>$inputs_conf
 
     # Concatenate multiline logs

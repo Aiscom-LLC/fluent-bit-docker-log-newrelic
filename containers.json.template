@@ -1,0 +1,32 @@
+[
+    {
+        "container_name": "container_name_1",
+        "parser": "^\\\\[(?<timestamp>\\\\d*)\\\\] (?<level>\\\\w*)[ ]{1,2}(?<message>.*)",
+        "first_line": "square-bracket",
+    },
+    {
+        "container_name": "container_name_2",
+        "parser": "^\\\\[(?<timestamp>.*)\\\\] \\\\[(?<level>\\\\w*)\\\\] (?<message>.*)",
+        "first_line": "letter",
+    },
+    {
+        "container_name": "container_name_3",
+        "parser": "^\\\\[[0-9:TZ\\\\s\\\\-]*\\\\] \\\\[(?<level>\\\\w*)\\\\] \\\\[(?<request_id>[\\\\d\\\\w:]*)\\\\][ ]{1,2}(?<message>.*)",
+        "first_line": "[",
+    },
+    {
+        "container_name": "container_name_4",
+        "parser": "^\\\\[\\\\d\\\\d:\\\\d\\\\d:\\\\d\\\\d (?<level>\\\\w*)\\\\] (?<message>.*)",
+        "first_line": "[",
+    },
+    {
+        "container_name": "container_name_5",
+        "parser": "^\\\\[(?<timestamp>.*)\\\\] \\\\[(?<level>\\\\w*)\\\\] (?<message>.*)",
+        "first_line": "letter",
+    },
+    {
+        "container_name": "container_name_6",
+        "parser": "^(?<message>.*)",
+        "first_line": "letter",
+    }
+]

@@ -1,0 +1,13 @@
+# Parsers for container "{{container_name}}"
+[PARSER]
+    Name {{container_name}}__input
+    Format regex
+    Regex ^{"log":"(?<log>.*)","stream":"(?<stream>stdout|stderr)","attrs":{"tag":"(?<container_name>{{container_name}})"},"time":"(?<timestamp>[^\]]*)Z"}
+    Decode_Field_As escaped log
+#    Decode_Field_as escaped_utf8 log
+
+[PARSER]
+    Name {{container_name}}__capture
+    Format regex
+    Regex {{parser}}
+

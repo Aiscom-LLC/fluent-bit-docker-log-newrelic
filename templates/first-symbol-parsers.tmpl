@@ -1,0 +1,27 @@
+# First line of the logs starts with square left bracket '[', next lines start with any symbol excepting '[' ('\[' in regex format)
+# For example 
+#[2022-10-12 12:12:12] [INFO] message...
+#line2
+#  line3
+[MULTILINE_PARSER]
+    name multiline-square-bracket
+    type regex
+    flush_timeout 1000
+    key_content log
+    rule "start_state" "/^\[.*/" "cont"
+    rule "cont"  "/^[^\[].*/" "cont"
+
+# First line of the logs starts with letter, next lines start with any symbol excepting letters ('\w' in regex format)
+# For example 
+#Flushing stats at  Fri Oct 07 2022 05:35:45 GMT+0000 (UTC)
+#{ line2 
+#   line3
+[MULTILINE_PARSER]
+    name multiline-letter
+    type regex
+    flush_timeout 1000
+    key_content log
+    rule "start_state" "/^\w.*/" "cont"
+    rule "cont"  "/^[^\w].*/" "cont"
+
+

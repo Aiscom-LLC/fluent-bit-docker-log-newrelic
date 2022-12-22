@@ -1,0 +1,9 @@
+# Concatenate logs for container "{{container_name}}"
+[MULTILINE_PARSER]
+    name multiline-{{container_name}}
+    tag container-{{container_name}}
+    type regex
+    flush_timeout 1000
+    key_content log
+    rule "start_state" "/{{first_line}}/" "cont"
+    rule "cont"  "/{{next_lines}}/" "cont"

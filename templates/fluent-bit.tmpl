@@ -16,7 +16,7 @@
 # logging:
 #   options:
 #     tag: "{{.Name}}"
-@INCLUDE {{FLUENT_BIT_DIR}}conf/inputs.conf
+@INCLUDE {{FLUENT_BIT_DIR}}conf/container-log-inputs.conf
 
 # Exclude unparsed logs without field 'container_name'
 [FILTER]

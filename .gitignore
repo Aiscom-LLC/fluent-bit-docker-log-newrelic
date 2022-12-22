@@ -2,3 +2,5 @@ containers.json
 conf/
 .env
 out_newrelic-linux-*
+*.save
+*.copy

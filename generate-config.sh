@@ -3,19 +3,19 @@
 # ./add.sh
 source .env
 if [ "${FLUENT_BIT_DIR: -1}" != "/" ]; then FLUENT_BIT_DIR="${FLUENT_BIT_DIR}/"; fi
-if [[ ! -f "${FLUENT_BIT_DIR}containers.json" ]]; then echo "Configure containers.json" && exit; fi
+if [[ ! -f "./containers.json" ]]; then echo "Configure containers.json" && exit; fi
 containers=$(cat './containers.json')
-input_tmpl="${FLUENT_BIT_DIR}templates/container-log-input.tmpl"
+input_tmpl="./templates/container-log-input.tmpl"
 inputs_conf="${FLUENT_BIT_DIR}conf/container-log-inputs.conf"
-capture_filter_tmpl="${FLUENT_BIT_DIR}templates/capture-message-filter.tmpl"
+capture_filter_tmpl="./templates/capture-message-filter.tmpl"
 capture_filters_conf="${FLUENT_BIT_DIR}conf/capture-message-filters.conf"
-parser_tmpl="${FLUENT_BIT_DIR}templates/container-log-parsers.tmpl"
+parser_tmpl="./templates/container-log-parsers.tmpl"
 parsers_conf="${FLUENT_BIT_DIR}conf/container-log-parsers.conf"
-multiline_filter_tmpl="${FLUENT_BIT_DIR}templates/multiline-filter.tmpl"
+multiline_filter_tmpl="./templates/multiline-filter.tmpl"
 multiline_filters_conf="${FLUENT_BIT_DIR}conf/multiline-filters.conf"
-first_symbol_parser_tmpl="${FLUENT_BIT_DIR}templates/first-symbol-parsers.tmpl"
+first_symbol_parser_tmpl="./templates/first-symbol-parsers.tmpl"
 first_symbol_parser_conf="${FLUENT_BIT_DIR}conf/first-symbol-parsers.conf"
-outputs_tmpl="${FLUENT_BIT_DIR}templates/outputs.tmpl"
+outputs_tmpl="./templates/outputs.tmpl"
 outputs_conf="${FLUENT_BIT_DIR}conf/outputs.conf"
 plugin_tmpl="${FLUENT_BIT_DIR}templates/newrelic-fluent-bit-plugin.tmpl"
 plugin_conf="${FLUENT_BIT_DIR}conf/newrelic-fluent-bit-plugin.conf"
@@ -41,8 +41,10 @@ fi
 
 
 # Common parser
-[[ ! -d ./conf/ ]] && mkdir ./conf/
+[[ ! -d "${FLUENT_BIT_DIR}conf/" ]] && mkdir "${FLUENT_BIT_DIR}conf/"
 cp $first_symbol_parser_tmpl $first_symbol_parser_conf
+cp ${FLUENT_BIT_DIR}fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf.copy
+cp ./fluent-bit.conf ${FLUENT_BIT_DIR}fluent-bit.conf
 
 # Generate plugin config
 newrelic_fluent_bit_plugin=$( echo $NEWRELIC_FLUENT_BIT_PLUGIN_URL | awk -F'/' '{print $NF}')
@@ -59,7 +61,7 @@ sed -i -e "s@{{licenseKey}}@$NEWRELIC_LICENSE_KEY@g" -e "s@{{endpoint}}@$NEWRELI
 
 
 # Generate config for container logs
-rm -f ./conf/*
+rm -f "${FLUENT_BIT_DIR}conf/*"
 echo 'Generate config in fluent-bit for containers:'
 for k in $( jq -r 'keys | .[]' <<< $containers ); do
     container=$( jq -r ".[$k]" <<< $containers )

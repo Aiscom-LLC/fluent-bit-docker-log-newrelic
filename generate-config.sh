@@ -52,8 +52,8 @@ if [[ ! -d "${FLUENT_BIT_DIR}conf/" ]]; then
   mkdir "${FLUENT_BIT_DIR}conf/"
   mkdir "${FLUENT_BIT_DIR}db-log/"
 else
-  rm -f "${FLUENT_BIT_DIR}conf/*"
-  rm -f "${FLUENT_BIT_DIR}db-log/*"
+  rm -f ${FLUENT_BIT_DIR}conf/*
+  rm -f ${FLUENT_BIT_DIR}db-log/*
 fi
 rm -f ${FLUENT_BIT_DIR}*.db
 cp $first_symbol_parser_tmpl $first_symbol_parser_conf

@@ -48,7 +48,7 @@ if [[ ! -d "${FLUENT_BIT_DIR}conf/" ]]; then
   cp $pre_output_filters_tmpl $pre_output_filters_conf
   cp $config_tmpl $config_conf
   sed -i "s@{{FLUENT_BIT_DIR}}@$FLUENT_BIT_DIR@g" $config_conf
-  cp -r ./lua-scripts ${FLUENT_BIT_DIR}
+  cp -r ./pre-output-filters ${FLUENT_BIT_DIR}
   mkdir "${FLUENT_BIT_DIR}conf/"
   mkdir "${FLUENT_BIT_DIR}db-log/"
 else

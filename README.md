@@ -59,6 +59,4 @@ Parsing will succeed if the {{container_name}} in parser matches to container_na
 Then the message is assembled into a multiline message, is parsed by specific fields, is transformed by lua script and is sent to Newrelic
 
 See Fleunt bit flow log
-![alt text](https://github.com/Maksim-ops
-/
-fluent-bit-docker-log-newrelic/blob/main/Fluent-bit-Flow-Docker-logs.jpg.jpg?raw=true)
+![alt text](https://github.com/Maksim-ops/fluent-bit-docker-log-newrelic/blob/main/Fluent-bit-Flow-Docker-logs.jpg?raw=true)

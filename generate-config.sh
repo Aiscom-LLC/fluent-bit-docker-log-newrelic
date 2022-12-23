@@ -35,9 +35,9 @@ first_line_letter='letter'
 parser_fix="[\\\\\\\w\\\\\\\d\\\\\\\s%@(){}\\\\\\\[\\\\\\\];:,'\"\\\\\\\\\\\\\/\\\\\\\.\\\\\\\-\\\\\\\=\\\\\\\+\\\\\\\*\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\\\\\\\\#$|\\\\\\\^]*"
 
 # Check
-if [ "$OUTPUT_NEWRELIC" == "true" ]; then
-  if [[ "$NEWRELIC_LICENSE_KEY" == "" || "$NEWRELIC_ENDPOINT" == "" ]]; then
-    echo "Specify NEWRELIC_LICENSE_KEY and/or NEWRELIC_ENDPOINT variables in .env"
+if [ "$OUTPUT_NEW_RELIC" == "true" ]; then
+  if [[ "$NEW_RELIC_API_KEY" == "" || "$NEW_RELIC_ENDPOINT" == "" ]]; then
+    echo "Specify NEW_RELIC_API_KEY and/or NEW_RELIC_ENDPOINT variables in .env"
     exit 1
   fi
 fi
@@ -60,8 +60,8 @@ cp $first_symbol_parser_tmpl $first_symbol_parser_conf
 
 
 # Generate plugin config
-newrelic_fluent_bit_plugin=$( echo $NEWRELIC_FLUENT_BIT_PLUGIN_URL | awk -F'/' '{print $NF}')
-if [[ ! -f "${FLUENT_BIT_DIR}${newrelic_fluent_bit_plugin}" ]]; then wget $NEWRELIC_FLUENT_BIT_PLUGIN_URL -O "${FLUENT_BIT_DIR}$newrelic_fluent_bit_plugin"; fi
+newrelic_fluent_bit_plugin=$( echo "$NEW_RELIC_FLUENT_BIT_PLUGIN_URL" | awk -F'/' '{print $NF}')
+if [[ ! -f "${FLUENT_BIT_DIR}${newrelic_fluent_bit_plugin}" ]]; then wget "$NEW_RELIC_FLUENT_BIT_PLUGIN_URL" -O "${FLUENT_BIT_DIR}$newrelic_fluent_bit_plugin"; fi
 cp $plugin_tmpl $plugin_conf
 sed -i -e "s@{{newrelic_fluent_bit_plugin}}@${FLUENT_BIT_DIR}$newrelic_fluent_bit_plugin@" $plugin_conf
 
@@ -69,8 +69,8 @@ sed -i -e "s@{{newrelic_fluent_bit_plugin}}@${FLUENT_BIT_DIR}$newrelic_fluent_bi
 # Generate outputs config
 cp $outputs_tmpl $outputs_conf
 if [ "$OUTPUT_STDOUT" == "true" ]; then sed -i -e "s@#stdout#@@g" $outputs_conf; fi
-if [ "$OUTPUT_NEWRELIC" == "true" ]; then sed -i -e "s@#newrelic#@@g" $outputs_conf; fi
-sed -i -e "s@{{licenseKey}}@$NEWRELIC_LICENSE_KEY@g" -e "s@{{endpoint}}@$NEWRELIC_ENDPOINT@g" $outputs_conf
+if [ "$OUTPUT_NEW_RELIC" == "true" ]; then sed -i -e "s@#newrelic#@@g" $outputs_conf; fi
+sed -i -e "s@{{licenseKey}}@$NEW_RELIC_API_KEY@g" -e "s@{{endpoint}}@$NEW_RELIC_ENDPOINT@g" $outputs_conf
 
 
 # Generate config for container logs

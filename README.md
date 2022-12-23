@@ -60,3 +60,76 @@ Then the message is assembled into a multiline message, is parsed by specific fi
 
 See Fleunt bit flow log
 ![alt text](https://github.com/Maksim-ops/fluent-bit-docker-log-newrelic/blob/main/Fluent-bit-Flow-Docker-logs.jpg?raw=true)
+
+
+-----------------------------------------------------------------------------------
+
+Make monitoring in Newrelic
+
+
+
+For monitoring microservices by url Create monitor in "Synthetic monitoring" module: select 'Ping' monitor type for common simple cases.
+Specify name and url. Check Advanced options. Note: 'Bypass HEAD request' may cause errors if IIS doesn't allow header requests (to check exec command `curl -I $url`)
+To creaete advanced monitoring with specidic action select 'Scripted browser' type. 
+
+
+<details>
+  <summary>Monitoring script for SFTP</summary>
+
+  ```
+// https://discuss.newrelic.com/t/proactively-monitor-non-http-connections-with-new-relic-synthetics/118646
+// https://discuss.newrelic.com/t/relic-solution-ftp-sftp-ldap-tcp-and-smtp-examples/118661
+// https://www.npmjs.com/package/ssh2-sftp-client
+const Client = require('ssh2-sftp-client');
+const config = {
+  host: $secure.SFTP_HOST,
+  port: $secure.SFTP_PORT,
+  username: 'vs',
+  strictVendor: false,
+  privateKey: '-----BEGIN OPENSSH PRIVATE KEY-----\n<private key>\n-----END OPENSSH PRIVATE KEY-----',
+  algorithms: { serverHostKey: [ 'ssh-ed25519' ] },
+  //debug: msg => { console.error(msg); },
+  remotePath: '/vs'
+}
+const sftp = new Client();
+sftp.connect(config)
+// uncomment to check listing 
+/*.then(() => { return sftp.list(config.remotePath); })
+.then(data => { console.log(data); })*/
+.then(function (){ return sftp.end(); })
+.catch(function(err) { throw err; })
+  ```
+</details>
+
+
+<details>
+  <summary>Monitoring script for SMTP</summary>
+  ```
+// https://discuss.newrelic.com/t/proactively-monitor-non-http-connections-with-new-relic-synthetics/118646
+// https://discuss.newrelic.com/t/relic-solution-ftp-sftp-ldap-tcp-and-smtp-examples/118661
+var assert = require('assert');
+var nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+    host: $secure.SMTPQBSERVER,
+    port: 587,
+    auth: {
+        user: $secure.NOREPLYMAIL,
+        pass: $secure.NOREPLYMAILPASSWORD
+   }
+});
+
+var message = {
+    from: $secure.NOREPLYMAIL,
+    to: $secure.QBMAIL,
+    subject: 'Test message from New Relic Synthetic monitor',
+    text: 'Testing the nodemailer package.',
+}
+
+transporter.sendMail(message, function(err, info, response){
+    assert.ok(!err, "Error sending email: "+err)
+})
+  ```
+</details>
+
+

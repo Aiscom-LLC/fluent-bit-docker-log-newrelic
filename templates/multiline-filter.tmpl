@@ -1,7 +1,0 @@
-# Multiline filter for container "{{container_name}}"
-[FILTER]
-    name multiline
-    match container-{{container_name}}
-    multiline.key_content log
-    multiline.parser go, multiline-{{first_line}}
-

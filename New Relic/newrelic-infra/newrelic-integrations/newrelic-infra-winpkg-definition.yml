@@ -1,0 +1,12 @@
+name: com.newrelic.winpkg
+description: Reports inventory on installed windows packages
+protocol_version: 1
+os: windows
+
+commands:
+    packages:
+        command:
+            - ./nr-winpkg
+        prefix: packages/windows_programs
+        interval: 30
+

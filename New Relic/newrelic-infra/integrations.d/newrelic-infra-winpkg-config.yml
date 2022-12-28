@@ -1,0 +1,8 @@
+integration_name: com.newrelic.winpkg
+
+instances:
+  - name: windows_packages
+    command: packages
+    arguments:
+        include_components: false
+

@@ -1,0 +1,39 @@
+logs:
+  # - name: windows-security
+    # winlog:
+      # channel: Security
+      # collect-eventids:
+      # - 4740
+      # - 4728
+      # - 4732
+      # - 4756
+      # - 4735
+      # - 4624
+      # - 4625
+      # - 4648
+
+  # - name: windows-application
+    # winlog:
+      # channel: Application
+
+  - name: newrelic-cli.log
+    file: C:\Users\Administrator\.newrelic\newrelic-cli.log
+    attributes:
+      newrelic-cli: true
+
+## Transferred to Fluent Bit config due to multiline logs (fluent-bit running as a service)
+## C:\Program Files\New Relic\newrelic-infra\newrelic-integrations\logging\fluent-bit.conf
+#  - name: salesrun-api
+#    file: F:\storage\logs\api*.log
+#    attributes:
+#      logtype: fileRaw  
+    
+#  - name: salesrun-cli
+#    file: F:\storage\logs\cli*.log
+#    attributes:
+#      logtype: fileRaw  
+    
+#  - name: salesrun-migrator
+#    file: F:\storage\logs\migrator*.log
+#    attributes:
+#      logtype: fileRaw

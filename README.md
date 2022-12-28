@@ -58,6 +58,7 @@ sftp.connect(config)
 
 <details>
   <summary>Monitoring script for SMTP</summary>
+
   ```
 // https://discuss.newrelic.com/t/proactively-monitor-non-http-connections-with-new-relic-synthetics/118646
 // https://discuss.newrelic.com/t/relic-solution-ftp-sftp-ldap-tcp-and-smtp-examples/118661
